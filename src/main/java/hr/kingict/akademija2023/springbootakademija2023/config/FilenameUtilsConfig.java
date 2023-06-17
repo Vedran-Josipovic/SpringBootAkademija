@@ -1,4 +1,4 @@
-package hr.kingict.akademija2023.springbootakademija.config;
+package hr.kingict.akademija2023.springbootakademija2023.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

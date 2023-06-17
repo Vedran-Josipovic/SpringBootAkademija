@@ -1,4 +1,4 @@
-package hr.kingict.akademija2023.springbootakademija;
+package hr.kingict.akademija2023.springbootakademija2023;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

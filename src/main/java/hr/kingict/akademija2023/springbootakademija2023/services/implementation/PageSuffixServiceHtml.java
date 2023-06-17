@@ -1,6 +1,6 @@
-package hr.kingict.akademija2023.springbootakademija.services.implementation;
+package hr.kingict.akademija2023.springbootakademija2023.services.implementation;
 
-import hr.kingict.akademija2023.springbootakademija.services.PageSuffixService;
+import hr.kingict.akademija2023.springbootakademija2023.services.PageSuffixService;
 import org.springframework.stereotype.Service;
 
 @Service("html")
