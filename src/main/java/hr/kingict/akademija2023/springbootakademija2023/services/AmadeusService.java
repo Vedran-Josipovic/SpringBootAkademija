@@ -5,7 +5,6 @@ import com.amadeus.Params;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.referencedata.Locations;
 import com.amadeus.resources.Location;
-import hr.kingict.akademija2023.springbootakademija2023.dto.LocationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
