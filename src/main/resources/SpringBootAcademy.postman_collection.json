@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "a69a375a-41e2-43b4-af75-c65c7828ccc6",
+		"name": "SpringBootAcademy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28040968"
+	},
+	"item": [
+		{
+			"name": "testGet",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/demoAppTest/api/test/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testGetWithParam",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/demoAppTest/api/test/get/Gaming 2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"get",
+						"Gaming 2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testGetResponse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/demoAppTest/api/test/getResponse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"getResponse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testGetDto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/demoAppTest/api/test/getDto",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"getDto"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testPost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Pero\",\r\n    \"description\" : \"Gamer\",\r\n    \"order\" : 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/demoAppTest/api/test/post",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
