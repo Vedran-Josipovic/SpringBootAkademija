@@ -1,11 +1,11 @@
 package hr.kingict.akademija2023.springbootakademija2023.controller;
 
+import hr.kingict.akademija2023.springbootakademija2023.dto.TestDto;
+import hr.kingict.akademija2023.springbootakademija2023.form.TestForm;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "api/test")
@@ -30,7 +30,22 @@ public class TestController {
                 body("Greška");
     }
 
+    @GetMapping(value = "/getDto")
+    public ResponseEntity<TestDto> testGetDto(){
+        TestDto testDto = new TestDto();
+        testDto.setName("Ime");
+        testDto.setDescription("Opis");
+        return ResponseEntity.ok().body(testDto);
+    }
 
-
+    @PostMapping(value = "/post")
+    public ResponseEntity<TestDto> testPostWithParam(@RequestBody @Valid TestForm testForm){
+        TestDto testDto = new TestDto();
+        testDto.setName(testForm.getName());
+        testDto.setDescription(testForm.getDescription());
+        return ResponseEntity
+                .ok()
+                .body(testDto);
+    }
 
 }
