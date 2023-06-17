@@ -5,15 +5,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("Prod")
-public class DashboardServiceProd implements DashboardService {
+@Profile("!Test & !Prod")
+public class DashboardServiceDefault implements DashboardService {
     @Override
     public String getDashboard() {
-        return "dashboardProd";
-
-
+        return "dashboard";
     }
-
-
-
 }
