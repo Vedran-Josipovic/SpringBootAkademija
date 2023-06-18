@@ -23,6 +23,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 
+
+
+//Link na github voditelja akademije --> https://github.com/ivan12andric/SpringBootAkademija2023
+
 @Service
 public class AmadeusService {
     Logger logger = LoggerFactory.getLogger(AmadeusService.class);
