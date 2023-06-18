@@ -1,5 +1,6 @@
 package hr.kingict.akademija2023.springbootakademija2023.dto;
 
+//Dto znači data transfer object
 public class TestDto {
     private String name;
     private String description;

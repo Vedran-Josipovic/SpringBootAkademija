@@ -1,16 +1,17 @@
 package hr.kingict.akademija2023.springbootakademija2023.controller;
 
 import com.amadeus.resources.Location;
+import hr.kingict.akademija2023.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.springbootakademija2023.dto.LocationDto;
+import hr.kingict.akademija2023.springbootakademija2023.form.FlightSearchForm;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.LocationLocationDtoMapper;
 import hr.kingict.akademija2023.springbootakademija2023.services.AmadeusService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,6 +36,19 @@ public class FlightSearchController {
         return ResponseEntity
                 .ok()
                 .body(locationDtoList);
+    }
+
+    @PostMapping(value = "/flights")
+    public ResponseEntity<List<FlightSearchResultDto>> searchFlights(@RequestBody @Valid FlightSearchForm flightSearchForm){
+        List<FlightSearchResultDto> flightSearchResultDtoList =
+                amadeusService.searchFlights(
+                flightSearchForm.getOriginLocationCode(),
+                flightSearchForm.getDestinationLocationCode(),
+                flightSearchForm.getDepartureDate(),
+                flightSearchForm.getReturnDate(),
+                flightSearchForm.getAdults()
+                );
+        return ResponseEntity.ok().body(flightSearchResultDtoList);
     }
 
 }
