@@ -9,6 +9,7 @@ import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightOfferSearchFlightSearchResultDtoMapper;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightSearchResultDtoFlightSearchResultEntityMapper;
+import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightSearchResultEntityFlightSearchResultDtoMapper;
 import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchEntity;
 import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchResultEntity;
 import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchEntityRepo;
@@ -20,14 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AmadeusService {
     Logger logger = LoggerFactory.getLogger(AmadeusService.class);
+
+    @Autowired
+    private FlightSearchResultEntityFlightSearchResultDtoMapper flightSearchResultEntityFlightSearchResultDtoMapper;
 
     @Autowired
     private FlightOfferSearchFlightSearchResultDtoMapper flightSearchResultDtoMapper;
@@ -62,6 +63,21 @@ public class AmadeusService {
     public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode,
                                                      LocalDate departureDate, LocalDate returnDate, Integer adults) {
         try {
+            //Alternativna opcija preko querya --> https://www.baeldung.com/the-persistence-layer-with-spring-data-jpa
+            FlightSearchEntity existingFlightSearch = flightSearchEntityRepo.findOneByOriginLocationCodeAndDestinationLocationCodeAndDepartureDateAndReturnDateAndAdults(
+                    originLocationCode,destinationLocationCode,departureDate,returnDate, adults
+            );
+            if(existingFlightSearch != null){
+                List<FlightSearchResultEntity> flightSearchResultEntityList = existingFlightSearch.getFlightSearchResultEntityList();
+
+                logger.info("Dohvatio podatke iz baze");
+
+                return flightSearchResultEntityList.stream()
+                        .map(flightSearchResultEntity -> flightSearchResultEntityFlightSearchResultDtoMapper.map(flightSearchResultEntity))
+                        .toList();
+            }
+
+
             FlightSearchEntity flightSearchEntity = new FlightSearchEntity();
             flightSearchEntity.setOriginLocationCode(originLocationCode);
             flightSearchEntity.setDestinationLocationCode(destinationLocationCode);
@@ -105,6 +121,7 @@ public class AmadeusService {
                             });
 
 
+            logger.warn("Dohvatio podatke iz Amadeusa, to će nas koštati.");
             return flightSearchResultDtoList;
         } catch (Exception e) {
             logger.error("Search flight error: ", e);
