@@ -8,6 +8,9 @@ import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightOfferSearchFlightSearchResultDtoMapper;
+import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchEntity;
+import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchEntityRepo;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +30,40 @@ public class AmadeusService {
     private FlightOfferSearchFlightSearchResultDtoMapper flightSearchResultDtoMapper;
     @Autowired
     private Amadeus amadeus;
+
+    @Autowired
+    private FlightSearchEntityRepo flightSearchEntityRepo;
+
     public List<Location> searchAirports(String keyword) {
         try {
             Params param = Params
                     .with("subType", Locations.AIRPORT)
                     .and("keyword", keyword);
             return Arrays.asList(
-                amadeus.referenceData.locations.get(param)
+                    amadeus.referenceData.locations.get(param)
             );
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error("Search airports error: ", e);
             return Collections.emptyList();
         }
     }
 
-
+    @Transactional
     public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode,
                                                      LocalDate departureDate, LocalDate returnDate, Integer adults) {
         try {
+            FlightSearchEntity flightSearchEntity = new FlightSearchEntity();
+            flightSearchEntity.setOriginLocationCode(originLocationCode);
+            flightSearchEntity.setDestinationLocationCode(destinationLocationCode);
+            flightSearchEntity.setDepartureDate(departureDate);
+            flightSearchEntity.setReturnDate(returnDate);
+            flightSearchEntity.setAdults(adults);
+
+            flightSearchEntity.setDateCreated(LocalDate.now());
+            flightSearchEntity.setUserCreated("Vedran");
+
+            flightSearchEntityRepo.save(flightSearchEntity);
+
             Params params = Params
                     .with("originLocationCode", originLocationCode)
                     .and("destinationLocationCode", destinationLocationCode)
@@ -59,20 +77,20 @@ public class AmadeusService {
             }
 
             List<FlightOfferSearch> flightOfferSearchList = Arrays.asList
-                (amadeus.shopping.flightOffersSearch.get(params));
+                    (amadeus.shopping.flightOffersSearch.get(params));
 
             List<FlightSearchResultDto> flightSearchResultDtoList =
                     flightOfferSearchList
-                    .stream()
-                    .map(flightOfferSearch -> flightSearchResultDtoMapper.map(flightOfferSearch))
-                    .toList();
+                            .stream()
+                            .map(flightOfferSearch -> flightSearchResultDtoMapper.map(flightOfferSearch))
+                            .toList();
             return flightSearchResultDtoList;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error("Search flight error: ", e);
             return Collections.emptyList();
         }
 
     }
+
 
 }
