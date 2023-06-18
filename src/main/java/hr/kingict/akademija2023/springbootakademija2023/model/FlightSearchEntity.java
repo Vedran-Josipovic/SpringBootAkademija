@@ -4,6 +4,7 @@ package hr.kingict.akademija2023.springbootakademija2023.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +24,19 @@ public class FlightSearchEntity {
     private LocalDate returnDate;
     @Column(name = "broj_odraslih")
     private Integer adults;
+
+    @OneToMany(mappedBy = "flightSearchEntity")
+    private List<FlightSearchResultEntity> flightSearchResultEntityList;
+
+
+    public List<FlightSearchResultEntity> getFlightSearchResultEntityList() {
+        return flightSearchResultEntityList;
+    }
+
+    public void setFlightSearchResultEntityList(List<FlightSearchResultEntity> flightSearchResultEntityList) {
+        this.flightSearchResultEntityList = flightSearchResultEntityList;
+    }
+
     @Column(name = "datum_kreiranja")
     private LocalDate dateCreated;
     @Column(name = "korisnik_kreiranja")

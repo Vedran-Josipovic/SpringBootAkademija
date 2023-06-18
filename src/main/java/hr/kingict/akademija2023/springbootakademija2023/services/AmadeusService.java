@@ -8,8 +8,11 @@ import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightOfferSearchFlightSearchResultDtoMapper;
+import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightSearchResultDtoFlightSearchResultEntityMapper;
 import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchEntity;
+import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchResultEntity;
 import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchEntityRepo;
+import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchResultEntityRepo;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +36,13 @@ public class AmadeusService {
 
     @Autowired
     private FlightSearchEntityRepo flightSearchEntityRepo;
+
+
+    @Autowired
+    private FlightSearchResultEntityRepo flightSearchResultEntityRepo;
+
+    @Autowired
+    private FlightSearchResultDtoFlightSearchResultEntityMapper flightSearchResultDtoFlightSearchResultEntityMapper;
 
     public List<Location> searchAirports(String keyword) {
         try {
@@ -84,6 +94,17 @@ public class AmadeusService {
                             .stream()
                             .map(flightOfferSearch -> flightSearchResultDtoMapper.map(flightOfferSearch))
                             .toList();
+
+            flightSearchResultDtoList
+                    .stream()
+                    .map(flightSearchResultDto -> flightSearchResultDtoFlightSearchResultEntityMapper.map(flightSearchResultDto))
+                    .forEach(flightSearchResultEntity ->
+                            {
+                                flightSearchResultEntity.setFlightSearchEntity(flightSearchEntity);
+                                flightSearchResultEntityRepo.save(flightSearchResultEntity);
+                            });
+
+
             return flightSearchResultDtoList;
         } catch (Exception e) {
             logger.error("Search flight error: ", e);
